@@ -1,2 +1,2 @@
-import checkers, metrics, plotting, preprocessing
+import checker, metrics, plotting, preprocessing
 
