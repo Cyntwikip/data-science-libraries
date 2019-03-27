@@ -141,13 +141,11 @@ def trim_outliers(df, col, window=30*24):
     Given dataframe, column name, and window
     Return a new dataframe with trimmed outliers
     Outliers are values beyond 1.5 X interquartile range
-
     Arguments
     =========
     df = dataframe
     col = column name
     window = hours to check for outliers, default is 30 * 24 hours
-
     Returns
     ========
     Series of values with null outliers for the column
@@ -169,10 +167,8 @@ def trim_outliers(df, col, window=30*24):
 
         df_1.loc[range_start:range_end, col] = df.loc[range_start:range_end, col].apply(
             lambda x: x if x < trim_max else np.nan)
-        df_1.loc[range_start:range_end, col] = df.loc[range_start:range_end, col].apply(
-            lambda x: x if x > trim_min else np.nan)
-
-        
+        df_1.loc[range_start:range_end, col] = df_1.loc[range_start:range_end, col].apply(
+            lambda x: x if x > trim_min else np.nan)    
     return df_1[col]
 
 def add_time_features(df):
