@@ -1,7 +1,7 @@
 
 from setuptools import setup, find_packages
 
-setup(name='cpt2_libs',
+setup(name='data-science-libraries',
       version='0.1',
       description="CPT2 Scripts",
       url="https://github.com/Cyntwikip/data-science-libraries",
