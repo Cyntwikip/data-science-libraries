@@ -1,2 +1,5 @@
-import .checker as checker, .metrics as metrics, .plotting as plotting, .preprocessing as preprocessing
+from .checker import * 
+from .metrics import *
+from .plotting import * 
+from .preprocessing import *
 
