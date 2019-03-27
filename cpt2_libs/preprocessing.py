@@ -1,9 +1,3 @@
-import numpy as np
-import pandas as pd
-
-import datetime
-from datetime import timedelta
-
 def rolling_window(series, lookback=1, steps=1):
     """
     Apply rolling window on a Pandas Series input.
@@ -22,6 +16,9 @@ def rolling_window(series, lookback=1, steps=1):
     new_data : Pandas DataFrame
         windowed data
     """
+    import numpy as np
+    import pandas as pd
+
     new_data = pd.DataFrame()
     for i in range(lookback+steps):
         new_data[i] = series.shift(-i)
@@ -50,6 +47,9 @@ def delayed_rolling_window(series, delay=0, lookback=1, steps=1):
     new_data : Pandas DataFrame
         windowed data
     """
+    import numpy as np
+    import pandas as pd
+
     new_data = pd.DataFrame()
     for i in range(lookback+steps):
         if i<lookback:
@@ -84,6 +84,10 @@ def gen_hourly_epochs(start_time, end_time):
     end_time = datetime.datetime(2019,4,1)
     gen_hourly_epochs(start_time, end_time)
     """
+    import numpy as np
+    import pandas as pd
+    import datetime
+
     dates = pd.date_range(start_time,end_time,freq=pd.tseries.offsets.Hour())
     dates = pd.DataFrame({'date':dates})
     # convert to timestamp
@@ -113,6 +117,8 @@ def ts_to_dt(ts):
     ----------
     ts_to_dt(1554048000)
     """
+    import datetime
+
     return datetime.datetime.fromtimestamp(ts)
 
 def years_to_ts(years):
@@ -129,6 +135,9 @@ def years_to_ts(years):
     ts : numpy_array
         array of epoch equivalent of each year
     """
+    import numpy as np
+    import datetime
+    
     f = lambda year: datetime.datetime(year,1,1).timestamp()
     f = np.vectorize(f)
     return f(years)
@@ -151,6 +160,11 @@ def trim_outliers(df, col, window=30*24):
     Series of values with null outliers for the column
     Outliers returned as null
     """
+    import numpy as np
+    import pandas as pd
+
+    import datetime
+    from datetime import timedelta
     
     df_1 = df.copy()
     
@@ -176,6 +190,11 @@ def add_time_features(df):
     Given dataframe with epochs as index
     Return a dataframe additional columns: one-hot encoded day, month, and hour
     """
+    import numpy as np
+    import pandas as pd
+
+    import datetime
+    from datetime import timedelta
     from datetime import datetime as dt
 
     # adding time, day, and month as features
@@ -210,6 +229,8 @@ def get_past_vals(df_input, col, window_start=1, window_end=24, interval=1):
     ========
     Dataframe with past data as columns
     """
+    import pandas as pd
+    
     df = df_input.copy()
 
     # make a window of features of len(df_train) = all features
@@ -223,6 +244,8 @@ def train_test_split(df, test_prop):
     Split a pandas dataframe into training and testing
     Given df dataframe and proportion of test data
     """
+    import pandas as pd
+    
     train_prop = 1 - test_prop
     starting_epoch = min(df.index)
     df_len = len(df)

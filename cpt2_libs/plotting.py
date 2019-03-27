@@ -1,11 +1,3 @@
-import numpy as np
-import pandas as pd
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-import datetime
-from datetime import timedelta
 
 def plot_demand(x, y, label, metric_value, xlabel = "Date",
                  ylabel= "Power Demand (MW)", figure_size=(10,6), 
@@ -38,6 +30,15 @@ def plot_demand(x, y, label, metric_value, xlabel = "Date",
                 subtitle='Power Demand over Time');
     
     '''
+    import numpy as np
+    import pandas as pd
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    import datetime
+    from datetime import timedelta  
+    
     plt.style.use('seaborn-white')
     color = sns.color_palette('Set1') + sns.color_palette('Set2') 
     %matplotlib inline
@@ -92,6 +93,15 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
     =======
     plt (matplotlib plot/png) : demand vs. time plot
     """
+    import numpy as np
+    import pandas as pd
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    import datetime
+    from datetime import timedelta
+
     y_true = np.array(y_true[:leng])
     y_preds = np.array(y_preds[:leng])
     

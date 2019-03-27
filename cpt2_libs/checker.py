@@ -1,10 +1,3 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
-import datetime
-from datetime import timedelta
-
 def check_imputation_range(df, col, range_ = 168):
     """
     Arguments
@@ -19,6 +12,13 @@ def check_imputation_range(df, col, range_ = 168):
     Plots imputed vs actual
     
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
+    
     # artificially make missing values
     start0 = np.random.randint(low=1, high=10000)
     end0 = start0+range_
@@ -86,6 +86,12 @@ def check_imputation_1h(df, col):
     MAPE of imputated values (% error)
     Plots imputed vs actual
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
 
     # artificially make missing values
     df_ = df[["date", col]]
@@ -128,6 +134,12 @@ def find_similar_date_range(df_, col, i, forward=True):
     ========
     Returns an index range for date with similar weekend/weekday matching and hours
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
 
     # get values df_[col].values
     s = df_[col]
@@ -211,6 +223,12 @@ def impute_1h_gaps(df_, col):
     =========
     s = series with imputed values for 1 h gaps
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
 
     # dict_null_ranges follows {column_1: {null_index_1: range_1, null_index_2: range_2}, ...}
     dict_null_ranges = {}
@@ -249,6 +267,13 @@ def check_dates(df_):
     Check if hourly
     Return missing dates
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
+    
     num_dates = len(df_)
 
     # generate if all datetimes in the dataframe
@@ -267,6 +292,12 @@ def get_null_ranges(series):
     Accepts pandas series and returns key:value pair of
     index of first null value in range and corresponding range
     """
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    import datetime
+    from datetime import timedelta
 
     # get null values
     null_vals = series.isnull().values
@@ -307,7 +338,3 @@ def get_null_ranges(series):
             break
 
     return null_dict
-
-
-
-

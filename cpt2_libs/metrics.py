@@ -1,5 +1,3 @@
-import numpy as np
-
 def mape(actual, pred):
     """
     Computes mean absolute percentage error of actual and predicted values
@@ -16,6 +14,8 @@ def mape(actual, pred):
     mape : int
         computed MAPE
     """
+    import numpy as np
+    
     return np.abs(np.abs(actual-pred)/actual).mean()
 
 def compute_error_mape_ci(y_true, y_preds):
@@ -23,6 +23,8 @@ def compute_error_mape_ci(y_true, y_preds):
     Given list of true values and predicted values
     Return errors, MAPE and 95% confidence interval
     """
+    import numpy as np
+    
     errors = abs(abs(y_preds - y_true)/y_true)
     errors = np.sort(errors)
     MAPE = np.mean(errors)
@@ -54,7 +56,8 @@ def get_percentile(vals, p):
     mape : int
         computed MAPE
     """
-
+    import numpy as np
+    
     vals = np.sort(vals)
     N = len(vals)
     kd = p * (N + 1)
@@ -86,6 +89,8 @@ def get_accuracies_table(y_true, y_preds, forecast_ranges=[24, 24*30, 24*45]):
     df_accs = dataframe of MAPE, CI, 95th percentile error per forecast range
 
     """
+    import numpy as np
+    
     acc_dict = {"forecast_range (h)": [],
                 "MAPE": [], "error_CI": [],
                 "95th_percentile_error": []}
