@@ -41,7 +41,7 @@ def plot_demand(x, y, label, metric_value, xlabel = "Date",
     
     plt.style.use('seaborn-white')
     color = sns.color_palette('Set1') + sns.color_palette('Set2') 
-    %matplotlib inline
+    
     
     # Getting current time
     dt = list(str(datetime.datetime.now()))[:-7]
@@ -107,7 +107,6 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
     
     plt.style.use('seaborn-white')
     color = sns.color_palette('Set1') + sns.color_palette('Set2') 
-    %matplotlib inline
     
     # Getting current time
     dt = list(str(datetime.datetime.now()))[:-7]
