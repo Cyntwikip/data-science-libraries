@@ -1,4 +1,3 @@
-
 def plot_demand(x, y, label, metric_value, xlabel = "Date",
                  ylabel= "Power Demand (MW)", figure_size=(10,6), 
                  title = "This is a title", 
@@ -101,6 +100,8 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
 
     import datetime
     from datetime import timedelta
+	
+	import metrics
 
     y_true = np.array(y_true[:leng])
     y_preds = np.array(y_preds[:leng])
@@ -131,7 +132,7 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
     yerr = []
     
     for i in np.arange(0, leng):
-        errors, mape, ci = compute_mape(y_true[:i+1], y_preds[:i+1])
+        errors, mape, ci = metrics.compute_error_mape_ci(y_true[:i+1], y_preds[:i+1])
         y_pred_error = get_percentile(errors, p=p) * y_preds[i]
         yerr.append(y_pred_error)
 
