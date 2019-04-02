@@ -90,7 +90,7 @@ def get_accuracies_table(y_true, y_preds, forecast_ranges=[24, 24*30, 24*45]):
 
     """
     import numpy as np
-	import pandas as pd
+    import pandas as pd
     
     acc_dict = {"forecast_range (h)": [],
                 "MAPE": [], "error_CI": [],

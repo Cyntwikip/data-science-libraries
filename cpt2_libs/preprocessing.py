@@ -177,7 +177,7 @@ def trim_outliers(df, col, window=30*24):
         df_1.loc[range_start:range_end, col] = df_1.loc[range_start:range_end, col].apply(
             lambda x: x if x > trim_min else np.nan)
     
-	return df_1[col]
+    return df_1[col]
 	
 def add_time_features(df):
     """
@@ -252,8 +252,8 @@ def clean_1_168h(df, cols):
     
     Return df with imputed values for 1-168 h missing data
     """
-	from checker import *
-	import numpy as np
+    from checker import *
+    import numpy as np
 	
     for col in cols:
         print(col)
@@ -289,7 +289,7 @@ def clean_1_168h(df, cols):
             # save
             df[col][i:i+range_] = mean_vals
             
-	return df
+    return df
 	
 def impute_1h_gaps(df_, col):
     """
@@ -301,8 +301,8 @@ def impute_1h_gaps(df_, col):
     =========
     s = series with imputed values for 1 h gaps
     """
-	from checker import *
-	import numpy as np
+    from checker import *
+    import numpy as np
 	
     # dict_null_ranges follows {column_1: {null_index_1: range_1, null_index_2: range_2}, ...}
     dict_null_ranges = {}
@@ -331,5 +331,5 @@ def impute_1h_gaps(df_, col):
         ind = inds_1[i]
         s[ind] = np.mean([s[ind - 1], s[ind + 1]])
 
-	return s
+    return s
 	

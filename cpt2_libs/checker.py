@@ -12,7 +12,7 @@ def check_imputation_range(df, col, range_ = 168):
     Plots imputed vs actual
     
     """
-	import numpy as np
+    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
@@ -84,8 +84,8 @@ def check_imputation_1h(df, col):
     =========
     MAPE of imputated values (% error)
     Plots imputed vs actual
-	"""
-	import numpy as np
+    """
+    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
@@ -131,7 +131,7 @@ def find_similar_date_range(df_, col, i, forward=True):
     ========
     Returns an index range for date with similar weekend/weekday matching and hours
     """
-	import numpy as np
+    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
@@ -262,7 +262,7 @@ def check_dates(df_):
     Check if hourly
     Return missing dates
     """
-	import numpy as np
+    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
@@ -288,7 +288,7 @@ def get_null_ranges(series):
     Accepts pandas series and returns key:value pair of
     index of first null value in range and corresponding range
     """
-	import numpy as np
+    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 

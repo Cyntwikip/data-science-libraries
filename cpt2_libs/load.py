@@ -10,7 +10,7 @@ def load_demand_excel(path):
     ==========
     pandas dataframe of input data
     """
-	import pandas as pd
+    import pandas as pd
 	
     # read excel as is
     demand_df = pd.read_excel(path)
@@ -22,6 +22,6 @@ def load_demand_excel(path):
     demand_df.date = pd.to_datetime(demand_df.date)
 
     # return
-	return demand_df
+    return demand_df
 
 	

@@ -44,6 +44,7 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
     df : Pandas DataFrame
         technical indicator calculations
     """
+    import pandas as pd
     
     df_rsi = quotes_df.reset_index()
     df_rsi['rsi - changes'] = df_rsi[target_col] - df_rsi[target_col].shift(1)
