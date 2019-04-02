@@ -158,7 +158,7 @@ def trim_outliers(df, col, window=30*24):
     Outliers returned as null
     """
     import numpy as np
-	
+
     df_1 = df.copy()
     
     num_windows = len(df) // window
@@ -178,14 +178,14 @@ def trim_outliers(df, col, window=30*24):
             lambda x: x if x > trim_min else np.nan)
     
     return df_1[col]
-	
+
 def add_time_features(df):
     """
     Given dataframe with epochs as index
     Return a dataframe additional columns: one-hot encoded day, month, and hour
     """
     from datetime import datetime as dt
-	import pandas as pd
+    import pandas as pd
 
     # adding time, day, and month as features
     # convert epochs to datetime
@@ -199,7 +199,7 @@ def add_time_features(df):
     
     df = pd.get_dummies(data = df, columns=["month", "day", "hour"])
 
-	return df
+    return df
 
 
 # daily from n hours ago to n months ago (same hour)
@@ -254,7 +254,7 @@ def clean_1_168h(df, cols):
     """
     from checker import *
     import numpy as np
-	
+
     for col in cols:
         print(col)
         
@@ -290,7 +290,7 @@ def clean_1_168h(df, cols):
             df[col][i:i+range_] = mean_vals
             
     return df
-	
+
 def impute_1h_gaps(df_, col):
     """
     Arguments
@@ -303,7 +303,7 @@ def impute_1h_gaps(df_, col):
     """
     from checker import *
     import numpy as np
-	
+
     # dict_null_ranges follows {column_1: {null_index_1: range_1, null_index_2: range_2}, ...}
     dict_null_ranges = {}
 
@@ -332,4 +332,4 @@ def impute_1h_gaps(df_, col):
         s[ind] = np.mean([s[ind - 1], s[ind + 1]])
 
     return s
-	
+

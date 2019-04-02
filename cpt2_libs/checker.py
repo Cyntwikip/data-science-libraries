@@ -18,7 +18,7 @@ def check_imputation_range(df, col, range_ = 168):
 
     import datetime
     from datetime import timedelta
-	
+
     # artificially make missing values
     start0 = np.random.randint(low=1, high=10000)
     end0 = start0+range_
@@ -91,7 +91,7 @@ def check_imputation_1h(df, col):
 
     import datetime
     from datetime import timedelta
-	
+
     # artificially make missing values
     df_ = df[["date", col]]
     df_.date = pd.to_datetime(df_.date)
@@ -255,7 +255,7 @@ def impute_1h_gaps(df_, col):
         s[ind] = np.mean([s[ind - 1], s[ind + 1]])
 
     return s
-	
+
 def check_dates(df_):
     """
     Given pandas Dataframe, check if all dates are present
@@ -268,7 +268,7 @@ def check_dates(df_):
 
     import datetime
     from datetime import timedelta
-	
+
     num_dates = len(df_)
 
     # generate if all datetimes in the dataframe
@@ -281,8 +281,8 @@ def check_dates(df_):
     if a == []:
         print("OK")
     else:
-        return(a)	
-	
+        return(a)
+
 def get_null_ranges(series):
     """
     Accepts pandas series and returns key:value pair of
@@ -294,7 +294,7 @@ def get_null_ranges(series):
 
     import datetime
     from datetime import timedelta
-	
+
     # get null values
     null_vals = series.isnull().values
 
@@ -333,4 +333,4 @@ def get_null_ranges(series):
             null_dict[key] = range_
             break
 
-    return null_dict	
+    return null_dict

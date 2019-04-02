@@ -11,7 +11,7 @@ def load_demand_excel(path):
     pandas dataframe of input data
     """
     import pandas as pd
-	
+
     # read excel as is
     demand_df = pd.read_excel(path)
 
@@ -24,4 +24,3 @@ def load_demand_excel(path):
     # return
     return demand_df
 
-	
