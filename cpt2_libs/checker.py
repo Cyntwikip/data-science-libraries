@@ -72,7 +72,7 @@ def check_imputation_range(df, col, range_ = 168):
     num_samples = len(actual)
     mape = np.sum(abs(actual-imputed)/actual)/num_samples * 100
     print(f"MAPE = {mape}%")
-	return mape
+    return mape
 
 def check_imputation_1h(df, col):
     """
@@ -114,7 +114,7 @@ def check_imputation_1h(df, col):
     imputed = df_[col][rand_ind]
     mape = np.sum(abs(actual-imputed)/actual) * 100
     print(f"MAPE = {mape}%")
-	return mape
+    return mape
 
 def find_similar_date_range(df_, col, i, forward=True):
     """
@@ -207,7 +207,7 @@ def find_similar_date_range(df_, col, i, forward=True):
     # return a list of dates
     final_date_window = (back_i, back_i + range_)
 
-	return final_date_window
+    return final_date_window
 
 def impute_1h_gaps(df_, col):
     """
@@ -333,4 +333,4 @@ def get_null_ranges(series):
             null_dict[key] = range_
             break
 
-	return null_dict	
+    return null_dict	
