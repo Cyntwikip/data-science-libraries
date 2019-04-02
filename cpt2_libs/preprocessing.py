@@ -252,7 +252,7 @@ def clean_1_168h(df, cols):
     
     Return df with imputed values for 1-168 h missing data
     """
-    from checker import *
+    import checker
     import numpy as np
 
     for col in cols:
@@ -261,7 +261,7 @@ def clean_1_168h(df, cols):
         dict_null_ranges = {}
 
         series = df[col]
-        null_ranges = get_null_ranges(series)
+        null_ranges = checker.get_null_ranges(series)
         dict_null_ranges[col] = null_ranges
 
         # FOR 1 h < X <= 168 h (7 days)
@@ -276,11 +276,11 @@ def clean_1_168h(df, cols):
             range_ = dict_null_ranges[col][i]
 
             # forward
-            start, end = find_similar_date_range(df, col, i, forward=True)
+            start, end = checker.find_similar_date_range(df, col, i, forward=True)
             forward_vals = df[col][start:end]
 
             # backward
-            start, end = find_similar_date_range(df, col, i, forward=False)
+            start, end = checker.find_similar_date_range(df, col, i, forward=False)
             backward_vals = df[col][start:end]
 
             # Average out the forward values and backward values
@@ -301,7 +301,7 @@ def impute_1h_gaps(df_, col):
     =========
     s = series with imputed values for 1 h gaps
     """
-    from checker import *
+    import checker
     import numpy as np
 
     # dict_null_ranges follows {column_1: {null_index_1: range_1, null_index_2: range_2}, ...}
@@ -309,7 +309,7 @@ def impute_1h_gaps(df_, col):
 
     # loop over all columns
     series = df_[col]
-    null_ranges = get_null_ranges(series)
+    null_ranges = checker.get_null_ranges(series)
     dict_null_ranges[col] = null_ranges
 
     indices = list(dict_null_ranges[col].keys())
