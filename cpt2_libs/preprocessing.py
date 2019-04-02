@@ -142,9 +142,6 @@ def years_to_ts(years):
     f = np.vectorize(f)
     return f(years)
 
-
-# Running window
-# trim outside 1.5X interquartile range in the window
 def trim_outliers(df, col, window=30*24):
     """
     Given dataframe, column name, and window
@@ -161,11 +158,7 @@ def trim_outliers(df, col, window=30*24):
     Outliers returned as null
     """
     import numpy as np
-    import pandas as pd
-
-    import datetime
-    from datetime import timedelta
-    
+	
     df_1 = df.copy()
     
     num_windows = len(df) // window
@@ -182,25 +175,22 @@ def trim_outliers(df, col, window=30*24):
         df_1.loc[range_start:range_end, col] = df.loc[range_start:range_end, col].apply(
             lambda x: x if x < trim_max else np.nan)
         df_1.loc[range_start:range_end, col] = df_1.loc[range_start:range_end, col].apply(
-            lambda x: x if x > trim_min else np.nan)    
-    return df_1[col]
-
+            lambda x: x if x > trim_min else np.nan)
+    
+	return df_1[col]
+	
 def add_time_features(df):
     """
     Given dataframe with epochs as index
     Return a dataframe additional columns: one-hot encoded day, month, and hour
     """
-    import numpy as np
-    import pandas as pd
-
-    import datetime
-    from datetime import timedelta
     from datetime import datetime as dt
+	import pandas as pd
 
     # adding time, day, and month as features
     # convert epochs to datetime
     months = [dt.fromtimestamp(df.index[i]).month for i in range(len(df))]
-    days = [dt.fromtimestamp(df.index[i]).day for i in range(len(df))]
+    days = [dt.fromtimestamp(df.index[i]).isoweekday() for i in range(len(df))]
     hours = [dt.fromtimestamp(df.index[i]).hour for i in range(len(df))]
 
     df["month"] = months
@@ -209,7 +199,8 @@ def add_time_features(df):
     
     df = pd.get_dummies(data = df, columns=["month", "day", "hour"])
 
-    return df
+	return df
+
 
 # daily from n hours ago to n months ago (same hour)
 def get_past_vals(df_input, col, window_start=1, window_end=24, interval=1):
@@ -253,3 +244,92 @@ def train_test_split(df, test_prop):
     df_train = df[:start_test]
     df_test = df[start_test:]
     return df_train, df_test
+
+def clean_1_168h(df, cols):
+    """
+    Given dataframe of demand
+    And columns to clean
+    
+    Return df with imputed values for 1-168 h missing data
+    """
+	from checker import *
+	import numpy as np
+	
+    for col in cols:
+        print(col)
+        
+        dict_null_ranges = {}
+
+        series = df[col]
+        null_ranges = get_null_ranges(series)
+        dict_null_ranges[col] = null_ranges
+
+        # FOR 1 h < X <= 168 h (7 days)
+        # get indices of 1 hour null values
+        indices = list(dict_null_ranges[col].keys())
+        ranges = list(dict_null_ranges[col].values())
+
+        inds_1_168 = [indices[i] for i in range(
+            len(indices)) if ranges[i] > 1 and ranges[i] <= 168]
+
+        for i in inds_1_168:
+            range_ = dict_null_ranges[col][i]
+
+            # forward
+            start, end = find_similar_date_range(df, col, i, forward=True)
+            forward_vals = df[col][start:end]
+
+            # backward
+            start, end = find_similar_date_range(df, col, i, forward=False)
+            backward_vals = df[col][start:end]
+
+            # Average out the forward values and backward values
+            mean_vals = np.mean([forward_vals, backward_vals], axis=0)
+
+            # save
+            df[col][i:i+range_] = mean_vals
+            
+	return df
+	
+def impute_1h_gaps(df_, col):
+    """
+    Arguments
+    =========
+    df_ = dataframe
+    col = column of interest in the dataframe
+    Returns
+    =========
+    s = series with imputed values for 1 h gaps
+    """
+	from checker import *
+	import numpy as np
+	
+    # dict_null_ranges follows {column_1: {null_index_1: range_1, null_index_2: range_2}, ...}
+    dict_null_ranges = {}
+
+    # loop over all columns
+    series = df_[col]
+    null_ranges = get_null_ranges(series)
+    dict_null_ranges[col] = null_ranges
+
+    indices = list(dict_null_ranges[col].keys())
+    ranges = list(dict_null_ranges[col].values())
+
+    # get values df_[col].values
+    s = df_[col].values
+
+    # FOR 1 hour gaps
+    # for ranges == 1, just average previous index and next index
+    # get indices of 1 hour null values
+    if len(indices) == 1:
+        inds_1 = indices
+    else:
+        inds_1 = [indices[i] for i in range(len(indices)) if ranges[i] == 1]
+
+    # interpolate average(inds_1 - 1, inds_1 + 1)
+    for i in range(len(inds_1)):
+        ind = inds_1[i]
+        s[ind] = np.mean([s[ind - 1], s[ind + 1]])
+
+	return s
+	

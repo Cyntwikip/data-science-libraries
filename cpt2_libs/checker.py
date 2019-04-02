@@ -12,13 +12,13 @@ def check_imputation_range(df, col, range_ = 168):
     Plots imputed vs actual
     
     """
-    import numpy as np
+	import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
     import datetime
     from datetime import timedelta
-    
+	
     # artificially make missing values
     start0 = np.random.randint(low=1, high=10000)
     end0 = start0+range_
@@ -72,7 +72,7 @@ def check_imputation_range(df, col, range_ = 168):
     num_samples = len(actual)
     mape = np.sum(abs(actual-imputed)/actual)/num_samples * 100
     print(f"MAPE = {mape}%")
-    return mape
+	return mape
 
 def check_imputation_1h(df, col):
     """
@@ -80,19 +80,18 @@ def check_imputation_1h(df, col):
     =========
     df = pandas DataFrame
     col = column to check
-
     Returns
     =========
     MAPE of imputated values (% error)
     Plots imputed vs actual
-    """
-    import numpy as np
+	"""
+	import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
     import datetime
     from datetime import timedelta
-
+	
     # artificially make missing values
     df_ = df[["date", col]]
     df_.date = pd.to_datetime(df_.date)
@@ -115,26 +114,24 @@ def check_imputation_1h(df, col):
     imputed = df_[col][rand_ind]
     mape = np.sum(abs(actual-imputed)/actual) * 100
     print(f"MAPE = {mape}%")
-    return mape
+	return mape
 
 def find_similar_date_range(df_, col, i, forward=True):
     """
     Given series of date, and initial date i and range from that date
     Say, Jan 1 and range is 5 so January 1 to 5. Return a list of dates
     with similar time and weekend/weekday matching
-
     Arguments
     =========
     df_ = pandas Dataframe of dates and values
     col = column of dataframe to consider
     i = index of date in Series
     forward = True if find a date range going forwards or False if going backwards
-
     Returns
     ========
     Returns an index range for date with similar weekend/weekday matching and hours
     """
-    import numpy as np
+	import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
@@ -210,7 +207,7 @@ def find_similar_date_range(df_, col, i, forward=True):
     # return a list of dates
     final_date_window = (back_i, back_i + range_)
 
-    return final_date_window
+	return final_date_window
 
 def impute_1h_gaps(df_, col):
     """
@@ -258,47 +255,46 @@ def impute_1h_gaps(df_, col):
         s[ind] = np.mean([s[ind - 1], s[ind + 1]])
 
     return s
-
-# make sure all dates are present
-# check if all dates are in the dataframe
+	
 def check_dates(df_):
     """
     Given pandas Dataframe, check if all dates are present
     Check if hourly
     Return missing dates
     """
-    import numpy as np
+	import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
     import datetime
     from datetime import timedelta
-    
+	
     num_dates = len(df_)
 
     # generate if all datetimes in the dataframe
     base = min(df_.date)
-    arr = np.array([base + datetime.timedelta(hours=i) for i in range(num_dates)])
+    arr = np.array([base + datetime.timedelta(hours=i)
+                    for i in range(num_dates)])
 
     # indices of date gaps
     a = [i for i in range(len(df_.date)) if df_.date[i] != arr[i]]
     if a == []:
         print("OK")
     else:
-        return(a)
-    
+	return(a)	
+	
 def get_null_ranges(series):
     """
     Accepts pandas series and returns key:value pair of
     index of first null value in range and corresponding range
     """
-    import numpy as np
+	import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
     import datetime
     from datetime import timedelta
-
+	
     # get null values
     null_vals = series.isnull().values
 
@@ -337,4 +333,4 @@ def get_null_ranges(series):
             null_dict[key] = range_
             break
 
-    return null_dict
+	return null_dict	

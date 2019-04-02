@@ -90,13 +90,14 @@ def get_accuracies_table(y_true, y_preds, forecast_ranges=[24, 24*30, 24*45]):
 
     """
     import numpy as np
+	import pandas as pd
     
     acc_dict = {"forecast_range (h)": [],
                 "MAPE": [], "error_CI": [],
                 "95th_percentile_error": []}
 
     for forecast_range in forecast_ranges:
-        errors, mape, ci = compute_mape(
+        errors, mape, ci = compute_error_mape_ci(
             y_true[:forecast_range], y_preds[:forecast_range])
         error_95 = get_percentile(errors, p=p)
 
