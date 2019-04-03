@@ -1,3 +1,17 @@
+def add_empty_row(df):
+    # Add empty row at the bottom
+    import pandas as pd
+    import numpy as np
+    
+    columns = ['date']
+    [columns.append(i) for i in df.columns.tolist()]
+    empty = pd.DataFrame([np.nan]*(len(df.columns)+1), index=columns).T
+    empty['date'] = df.index[-1] + 3600
+    empty.set_index('date', inplace=True)
+    df = df.append(empty)
+    
+    return df
+
 # UPDATED 
 def macd(quotes_df, target_col = 'Demand', longer_ma = 24, shorter_ma = 12, ):
     """
@@ -21,15 +35,6 @@ def macd(quotes_df, target_col = 'Demand', longer_ma = 24, shorter_ma = 12, ):
     """
     
     df_macd = quotes_df
-    
-
-    # Add empty row at the bottom
-    columns = ['date']
-    [columns.append(i) for i in df_macd.columns.tolist()]
-    empty = pd.DataFrame([np.nan]*(len(df_macd.columns)+1), index=columns).T
-    empty['date'] = df_macd.index[-1] + 3600
-    empty.set_index('date', inplace=True)
-    df_macd = df_macd.append(empty)
     
     df_macd['macd - longer_ma'] = df_macd[target_col].rolling(longer_ma).mean()
     df_macd['macd - shorter_ma'] = df_macd[target_col].rolling(shorter_ma).mean()
@@ -62,8 +67,8 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
     df : Pandas DataFrame
         technical indicator calculations
     """
-    import numpy as np
     import pandas as pd
+    import numpy as np
     
     new_index = quotes_df.index[-1] + 3600
     df_rsi = quotes_df.reset_index()
@@ -135,7 +140,6 @@ def ema(quotes_df, target_col = 'Demand', period = 10):
     df = df_ema.drop('ema - ma', axis = 1)
     return df
 
-
 # UDPATED
 def bollinger(quotes_df, target_col = 'Demand', period = 20):
     """
@@ -171,6 +175,24 @@ def bollinger(quotes_df, target_col = 'Demand', period = 20):
     df = df_bollinger.drop('bollinger - std', axis = 1)
     return df
 
-
-
-
+def technical_indicators(df):
+    """
+    compute technical indicators
+    
+    Parameters
+    ----------
+    quotes_df : Pandas Dataframe
+        time series
+    
+    Returns
+    ----------
+    df : Pandas DataFrame
+        technical indicator calculations
+    """
+    df = add_empty_row(df)
+    df = macd(df)
+    df = rsi(df)
+    df = ema(df)
+    df = bollinger(df)
+    
+    return df
