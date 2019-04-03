@@ -1,3 +1,4 @@
+# UPDATED 
 def macd(quotes_df, target_col = 'Demand', longer_ma = 24, shorter_ma = 12, ):
     """
     Compute the Moving Average Convergence Divergence
@@ -20,12 +21,29 @@ def macd(quotes_df, target_col = 'Demand', longer_ma = 24, shorter_ma = 12, ):
     """
     
     df_macd = quotes_df
+    
+
+    # Add empty row at the bottom
+    columns = ['date']
+    [columns.append(i) for i in df_macd.columns.tolist()]
+    empty = pd.DataFrame([np.nan]*(len(df_macd.columns)+1), index=columns).T
+    empty['date'] = df_macd.index[-1] + 3600
+    empty.set_index('date', inplace=True)
+    df_macd = df_macd.append(empty)
+    
     df_macd['macd - longer_ma'] = df_macd[target_col].rolling(longer_ma).mean()
     df_macd['macd - shorter_ma'] = df_macd[target_col].rolling(shorter_ma).mean()
     df_macd['macd - diff'] = df_macd['macd - longer_ma'] - df_macd['macd - shorter_ma']
+    
+    
+    df_macd['macd - longer_ma'] = df_macd['macd - longer_ma'].shift(1)
+    df_macd['macd - shorter_ma'] = df_macd['macd - shorter_ma'].shift(1)
+    df_macd['macd - diff'] = df_macd['macd - diff'].shift(1)
+    
     df = df_macd
     return df
 
+# UPDATED
 def rsi(quotes_df, target_col = 'Demand', period = 14):
     """
     Compute the Relative Strength Index
@@ -44,10 +62,13 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
     df : Pandas DataFrame
         technical indicator calculations
     """
-    import pandas as pd
     import numpy as np
+    import pandas as pd
     
+    new_index = quotes_df.index[-1] + 3600
     df_rsi = quotes_df.reset_index()
+    
+    
     df_rsi['rsi - changes'] = df_rsi[target_col] - df_rsi[target_col].shift(1)
 
     gains = [0]
@@ -72,11 +93,20 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
 
     df_rsi['rsi - rs'] = df_rsi['rsi - avg gains']/df_rsi['rsi - avg losses']
     df_rsi['rsi - rsi'] = 100 - (100/(1 + df_rsi['rsi - rs']))
+    
+    df_rsi['rsi - rsi'] = df_rsi['rsi - rsi'].shift(1)
     df = df_rsi.drop(['rsi - changes', 'rsi - gains','rsi - losses',
                       'rsi - avg gains', 'rsi - avg losses',
                       'rsi - rs'], axis = 1)
+    
+    
+    index_column = df.columns.tolist()[0]
+    df.rename(columns={index_column:'date'}, inplace=True)
+    df.set_index('date', inplace=True)
+    
     return df
 
+# UPDATED
 def ema(quotes_df, target_col = 'Demand', period = 10):
     """
     Compute the Exponential Moving Averages
@@ -100,10 +130,13 @@ def ema(quotes_df, target_col = 'Demand', period = 10):
     df_ema = quotes_df
     df_ema['ema - ma'] = df_ema[target_col].rolling(period).mean()
     df_ema['ema - ema'] = (multiplier*(df_ema[target_col]-df_ema[target_col].shift(1))+df_ema['ema - ma'].shift(1))
-
+    
+    df_ema['ema - ema'] = df_ema['ema - ema'].shift(1)
     df = df_ema.drop('ema - ma', axis = 1)
     return df
 
+
+# UDPATED
 def bollinger(quotes_df, target_col = 'Demand', period = 20):
     """
     Compute the Bollinger Bands values
@@ -130,6 +163,14 @@ def bollinger(quotes_df, target_col = 'Demand', period = 20):
     df_bollinger['bollinger - upper'] = df_bollinger['bollinger - middle'] + 2*df_bollinger['bollinger - std']
     df_bollinger['bollinger - lower'] = df_bollinger['bollinger - middle'] - 2*df_bollinger['bollinger - std']
 
+        
+    df_bollinger['bollinger - middle'] = df_bollinger['bollinger - middle'].shift(1)
+    df_bollinger['bollinger - upper'] = df_bollinger['bollinger - upper'].shift(1)
+    df_bollinger['bollinger - lower'] = df_bollinger['bollinger - lower'].shift(1)
 
     df = df_bollinger.drop('bollinger - std', axis = 1)
     return df
+
+
+
+
