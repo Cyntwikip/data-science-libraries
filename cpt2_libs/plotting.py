@@ -101,7 +101,7 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
     import datetime
     from datetime import timedelta
 
-    from .metrics import *
+    from .metrics import compute_error_mape_ci, get_percentile
 
     y_true = np.array(y_true[:leng])
     y_preds = np.array(y_preds[:leng])
