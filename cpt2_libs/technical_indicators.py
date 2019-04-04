@@ -1,7 +1,7 @@
 def add_empty_row(df):
-    # Add empty row at the bottom
     import pandas as pd
     import numpy as np
+    # Add empty row at the bottom
     
     columns = ['date']
     [columns.append(i) for i in df.columns.tolist()]
@@ -67,8 +67,8 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
     df : Pandas DataFrame
         technical indicator calculations
     """
-    import pandas as pd
-    import numpy as np
+	import numpy as np
+	import pandas as pd
     
     new_index = quotes_df.index[-1] + 3600
     df_rsi = quotes_df.reset_index()
@@ -175,7 +175,7 @@ def bollinger(quotes_df, target_col = 'Demand', period = 20):
     df = df_bollinger.drop('bollinger - std', axis = 1)
     return df
 
-def technical_indicators(df):
+def calculate_technical_indicators(df, target_col = 'Demand'):
     """
     compute technical indicators
     
@@ -190,9 +190,9 @@ def technical_indicators(df):
         technical indicator calculations
     """
     df = add_empty_row(df)
-    df = macd(df)
-    df = rsi(df)
-    df = ema(df)
-    df = bollinger(df)
+    df = macd(df, target_col)
+    df = rsi(df, target_col)
+    df = ema(df, target_col)
+    df = bollinger(df, target_col)
     
     return df
