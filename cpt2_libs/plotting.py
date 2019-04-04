@@ -1,4 +1,4 @@
-def plot_demand(x, y, label, metric_value, xlabel = "Date",
+ef plot_demand(x, y, label, metric_value, xlabel = "Date",
                  ylabel= "Power Demand (MW)", figure_size=(10,6), 
                  title = "This is a title", 
                  subtitle = "This is a subtitle",
@@ -21,7 +21,6 @@ def plot_demand(x, y, label, metric_value, xlabel = "Date",
     ========
     df = pd.read_csv('Luzon Demand per Zone_cleaned.csv')
     df_ = df[['date','ZONE 1 RTX']]
-
     plot_demand(range(len(df_)),df_['ZONE 1 RTX'],
                 'Zone 1 RTX',
                 11.672, 
@@ -44,9 +43,7 @@ def plot_demand(x, y, label, metric_value, xlabel = "Date",
     
     # Getting current time
     dt = list(str(datetime.datetime.now()))[:-7]
-    dt[13], dt[16]= 'h','m'
-    dt.append('s')
-    time = "".join(dt)
+    time = "".join(dt[0:4] + dt[5:7] + dt[8:10])
 
     # Plotting proper
     plt.figure(figsize=figure_size);
@@ -63,7 +60,7 @@ def plot_demand(x, y, label, metric_value, xlabel = "Date",
     plt.legend(loc='lower right');
     
     if save_file:
-        plt.savefig('{}_{}_{}'.format(time,title,subtitle));
+        plt.savefig('{}_snap_plot_{}_{}'.format(time,title,subtitle));
     else:
         pass
     
@@ -109,9 +106,7 @@ def plot_performance(y_true, y_preds, dates, yerr, metric_value, leng=24, p=0.95
 
     # Getting current time
     dt = list(str(datetime.datetime.now()))[:-7]
-    dt[13], dt[16] = 'h', 'm'
-    dt.append('s')
-    time = "".join(dt)
+    time = "".join(dt[0:4] + dt[5:7] + dt[8:10])
 
     # Plotting proper
     plt.figure(figsize=figure_size)
@@ -137,8 +132,9 @@ def plot_performance(y_true, y_preds, dates, yerr, metric_value, leng=24, p=0.95
     plt.legend(loc='lower right')
 
     if save_file:
-        plt.savefig('{}_{}_{}'.format(time, title, subtitle))
+        plt.savefig('{}_snap_plot_{}_{}'.format(time, title, subtitle))
     else:
         pass
 
     return plt
+	
