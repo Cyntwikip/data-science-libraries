@@ -132,8 +132,8 @@ def plot_performance(y_true, y_preds, dates, metric_value, leng=24, p=0.95,
     yerr = []
     
     for i in np.arange(0, leng):
-        errors, mape, ci = metrics.compute_error_mape_ci(y_true[:i+1], y_preds[:i+1])
-        y_pred_error = metrics.get_percentile(errors, p=p) * y_preds[i]
+        errors, mape, ci = compute_error_mape_ci(y_true[:i+1], y_preds[:i+1])
+        y_pred_error = get_percentile(errors, p=p) * y_preds[i]
         yerr.append(y_pred_error)
 
     plt.fill_between(dates, y_preds-yerr, y_preds +
