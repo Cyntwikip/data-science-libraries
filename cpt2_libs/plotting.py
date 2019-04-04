@@ -1,4 +1,4 @@
-ef plot_demand(x, y, label, metric_value, xlabel = "Date",
+def plot_demand(x, y, label, metric_value, xlabel = "Date",
                  ylabel= "Power Demand (MW)", figure_size=(10,6), 
                  title = "This is a title", 
                  subtitle = "This is a subtitle",
