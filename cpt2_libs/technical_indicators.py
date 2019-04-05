@@ -67,8 +67,8 @@ def rsi(quotes_df, target_col = 'Demand', period = 14):
     df : Pandas DataFrame
         technical indicator calculations
     """
-	import numpy as np
-	import pandas as pd
+    import numpy as np
+    import pandas as pd
     
     new_index = quotes_df.index[-1] + 3600
     df_rsi = quotes_df.reset_index()
