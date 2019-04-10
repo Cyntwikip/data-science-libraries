@@ -180,26 +180,36 @@ def trim_outliers(df, col, window=30*24):
     return df_1[col]
 
 def add_time_features(df):
-    """
-    Given dataframe with epochs as index
-    Return a dataframe additional columns: one-hot encoded day, month, and hour
-    """
-    from datetime import datetime as dt
+    '''Get time features like month of year, day of week and hour of day'''
+    import numpy as np
     import pandas as pd
 
-    # adding time, day, and month as features
-    # convert epochs to datetime
-    months = [dt.fromtimestamp(df.index[i]).month for i in range(len(df))]
-    days = [dt.fromtimestamp(df.index[i]).isoweekday() for i in range(len(df))]
-    hours = [dt.fromtimestamp(df.index[i]).hour for i in range(len(df))]
+    import datetime
+    from datetime import timedelta
+    from datetime import datetime as dt
 
-    df["month"] = months
-    df["day"] = days
-    df["hour"] = hours
-    
-    df = pd.get_dummies(data = df, columns=["month", "day", "hour"])
+    # adding hour (1-24), day of week (1-7), and month (1-12) as features
+    # also denote if weekday or weekend as a feature
+    # convert epochs to datetime
+    df['month'] = [
+        dt.fromtimestamp(df.index[i]).month for i in range(len(df))
+    ]
+    df['day_of_week'] = [
+        dt.fromtimestamp(df.index[i]).isoweekday() for i in range(len(df))
+    ]
+    df['hour'] = [
+        dt.fromtimestamp(df.index[i]).hour for i in range(len(df))
+    ]
+    df['is_weekday'] = [
+        0 if dt.fromtimestamp(
+            df.index[i]).isoweekday() >= 6 else 1 for i in range(len(df))
+    ]
+
+    # Get dummy variables
+    df = pd.get_dummies(df, columns=['month', 'day_of_week', 'hour'])
 
     return df
+
 
 
 # daily from n hours ago to n months ago (same hour)
